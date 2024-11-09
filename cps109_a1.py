@@ -91,7 +91,7 @@ def main():
         print("Invalid loan data. File missing.")
         return
     
-    result = []
+    results = []
     for loan in loans:
         result = process_loan(loan)
         results.append(result)
