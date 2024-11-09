@@ -21,7 +21,6 @@ Functional Requirements:
 import math
 
 #monthly payment calculator
-
 def calculate_monthly_payment(loan_amount, annual_interest_rate, repayment_years):
     monthly_interest_rate = annual_interest_rate/100/12
     number_of_payments = repayment_years * 12
@@ -33,7 +32,6 @@ def calculate_monthly_payment(loan_amount, annual_interest_rate, repayment_years
     return monthly_payment
 
 #process a single loan
-
 def process_loan(loan):
     loan_amount, annual_interest_rate, repayment_years = loan
     monthly_payment = calculate_monthly_payment(loan_amount, annual_interest_rate, repayment_years)
@@ -64,7 +62,7 @@ def write_results_to_file(filename, results):
 
 #main func
 def main():
-    
+
     output_file = 'loans_output.txt'
     results = []
 
@@ -130,3 +128,4 @@ def main():
 #execute program
 if __name__ == "__main__":
     main()
+    
