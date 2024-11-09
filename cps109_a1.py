@@ -2,7 +2,7 @@
 Student Loan Calculator
 
 This program calculates the monthly payment, total payment, and total interest for student loans.
-It reads loan parameters from an input file and writes the results to an output file.
+Users can input multiple loan entries via the terminal, and the results are written to an output file.
 
 Functional Requirements:
 - Input Parameters:
@@ -32,7 +32,7 @@ def calculate_monthly_payment(loan_amount, annual_interest_rate, repayment_years
                       / (math.pow(1 + monthly_interest_rate, number_of_payments) - 1)
     return monthly_payment
 
-#process loan
+#process a single loan
 
 def process_loan(loan):
     loan_amount, annual_interest_rate, repayment_years = loan
@@ -48,62 +48,85 @@ def process_loan(loan):
         'Total Interest': round(total_interest, 2)
     }
 
-#read loan from input file
-def read_loans_from_file(filename):
-    """
-    Read loan data from a file and return a list of loans
-    """
-
-    loans = []
-    try:
-        with open(filename, 'r') as file:
-            for line in file:
-                parts= line.strip().split(',')
-                if len(parts) != 3:
-                    print(f"Invalid line format: {line}")
-                    continue
-                loan_amount, interest_rate, years = map(float, parts)
-                loans.append((loan_amount, interest_rate, int(years)))
-    except FileNotFoundError:
-        print(f"File {filename} not found.")
-    return loans
-
 
 #ouput results to file
 def write_results_to_file(filename, results):
     with open(filename, 'w') as file:
-        for result in results:
+        for idx, result in enumerate(results, start=1):
             file.write(f"Loan Amount: ${result['Loan Amount']}\n")
             file.write(f"Annual Interest Rate: {result['Annual Interest Rate']}%\n")
             file.write(f"Repayment Period: {result['Repayment Years']} years\n")
             file.write(f"Monthly Payment: ${result['Monthly Payment']}\n")
             file.write(f"Total Payment: ${result['Total Payment']}\n")
-            file.write(f"Total Interest: ${result['total Interest']}\n")
+            file.write(f"Total Interest: ${result['Total Interest']}\n")
             file.write("-" * 40 + "\n")
+    print(f"\nLoan calculations completed. Results written to {filename}.")
 
 #main func
 def main():
-    input_file = 'loans_input.txt'
-    output_file = 'loans_output.txt'
-    loans = read_loans_from_file(input_file)
-
-    if not loans:
-        print("Invalid loan data. File missing.")
-        return
     
+    output_file = 'loans_output.txt'
     results = []
-    for loan in loans:
+
+    print("Welcome to the Student Loan Calculator!\n")
+
+    while True:
+        print("Enter loan details:")
+
+        # Input Loan Amount
+        while True:
+            try:
+                loan_amount = float(input("  Loan Amount ($): "))
+                if loan_amount < 0:
+                    print("  Please enter a positive number for the loan amount.")
+                    continue
+                break
+            except ValueError:
+                print("  Invalid input. Please enter a numeric value for the loan amount.")
+
+        # Input Annual Interest Rate
+        while True:
+            try:
+                annual_interest_rate = float(input("  Annual Interest Rate (%): "))
+                if annual_interest_rate < 0:
+                    print("  Please enter a non-negative number for the interest rate.")
+                    continue
+                break
+            except ValueError:
+                print("  Invalid input. Please enter a numeric value for the interest rate.")
+
+        # Input Repayment Period
+        while True:
+            try:
+                repayment_years = int(input("  Repayment Period (years): "))
+                if repayment_years <= 0:
+                    print("  Please enter a positive integer for the repayment period.")
+                    continue
+                break
+            except ValueError:
+                print("  Invalid input. Please enter an integer value for the repayment period.")
+
+        # Process the loan
+        loan = (loan_amount, annual_interest_rate, repayment_years)
         result = process_loan(loan)
         results.append(result)
-    
+        print("  Loan processed successfully.")
+
+        # Ask user if they want to add another loan
+        while True:
+            cont = input("Do you want to add another loan? (y/n): ").strip().lower()
+            if cont in ['y', 'n']:
+                break
+            else:
+                print("  Please enter 'y' for yes or 'n' for no.")
+
+        if cont != 'y':
+            break
+        print("")  # Add an empty line for better readability
+
+    # Write all results to the output file
     write_results_to_file(output_file, results)
-    print(f"Loan calculations completed. Results written to {output_file}.")
 
 #execute program
 if __name__ == "__main__":
     main()
-
-
-
-                                        
-

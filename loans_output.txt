@@ -3,3 +3,5 @@ Annual Interest Rate: 2.0%
 Repayment Period: 10 years
 Monthly Payment: $460.07
 Total Payment: $55208.07
+Total Interest: $5208.07
+----------------------------------------
